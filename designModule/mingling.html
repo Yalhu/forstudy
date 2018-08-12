@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    var lian={};
+    lian.paobing=function(pao_num){
+        alert(pao_num+'炮开始战斗');
+    };
+    lian.bubing=function(bubing_num){
+        alert(bubing_num+'人开始战斗');
+    };
+    lian.lianzhang=function(mingling){
+        lian[mingling.type](mingling.num);
+    };
+    lian.lianzhang({
+        type:'paobing',
+        num:100
+    });
+    lian.lianzhang({
+        type:'bubing',
+        num:500
+    })
+
+</script>
+</body>
+</html>

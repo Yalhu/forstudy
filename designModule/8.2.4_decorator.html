@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>装饰器模式</title>
+    <style></style>
+</head>
+<body>
+
+
+<script>
+/**结构型模式，与对象创建无关，考虑如何拓展对象的功能*/
+    //0
+    var tree={};
+    tree.decorate=function(){
+        alert('make sure the tree won\'t fall')
+    }
+    //1
+    tree.getDecorator=function(deco){
+        tree[deco].prototype=this;
+        return new tree[deco]
+    }
+    //2
+    tree.RedBalls=function(){
+        this.decorate=function(){
+            this.RedBalls.prototype.decorate();
+            alert('put on some red balls')
+        }
+    }
+    tree.BlueBalls=function(){
+        this.decorate=function(){
+            this.BlueBalls.prototype.decorate();
+            alert('put on some Blue balls')
+        }
+    }
+    tree.Angel=function(){
+        this.decorate=function(){
+            this.Angel.prototype.decorate();
+            alert('an angle on the top')
+        }
+    }
+
+    //3
+    tree=tree.getDecorator('BlueBalls')
+    console.log(tree)//tree.BlueBalls
+    tree=tree.getDecorator('Angel')
+    console.log(tree)//tree.Angel
+    tree=tree.getDecorator('RedBalls')
+    console.log(tree)//tree.RedBalls
+//4
+    tree.decorate();
+</script>
+</body>
+</html>

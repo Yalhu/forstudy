@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>寄生式继承</title>
+    <style></style>
+</head>
+<body>
+
+
+<script>
+    function object(o){
+        var n;
+        function F(){};
+        F.prototype=o;
+        n= new F();
+        n.uber=o;
+        return n ;
+    }
+    var twoDee={
+        name:'2D shape',
+        dimensions:2
+    };
+    //twoD对象克隆进that（object,或全属性拷贝），，
+    function triangle(s,h){
+        var that=object(twoDee);
+        that.name='Triangle';
+        that.getArea=function(){
+            return this.side*this.height/2;
+        }
+        that.side=s;
+        that.height=h;
+        return that;
+    }
+    var t=triangle(5,10)
+    console.log(t.dimensions)//2
+    console.log(t.getArea());//25
+    var t2=new triangle(5,5);
+    console.log(t2.getArea());//12.5
+
+</script>
+</body>
+</html>

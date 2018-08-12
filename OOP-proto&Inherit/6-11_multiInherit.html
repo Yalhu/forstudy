@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>多重继承</title>
+    <style></style>
+</head>
+<body>
+
+
+<script>
+    function multi(){
+        var n={},stuff,j= 0,len=arguments.length;
+        for(var j=0;j<len;j++){
+            stuff=arguments[j];
+            for(var i in stuff){
+                n[i]=stuff[i];
+            }
+        }
+        return n;
+    }
+    var shape={
+        name:'shape',
+        toString: function () {
+            return this.name;
+        }
+    }
+    var twoDee={
+        name:'2D shape',
+        dimensions:2
+    }
+    var triangle=multi(shape,twoDee,{
+        name:'Triangle',
+        getArea:function(){},
+        side:5,
+        height:10
+    });
+
+    console.log(triangle.name);//
+    console.log(triangle.dimensions);//
+    console.log(triangle.toString());//Triangle
+    //按输入顺序，以后一个对象为准
+
+//混合插入 mixins ，如Ruby
+    //不建立相关继承关系树的情况下获得对象的功能
+</script>
+</body>
+</html>

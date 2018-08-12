@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    var gongchang={};
+    gongchang.chanyifu=function(argument){
+        this.gongren=50;
+        //alert('我们有'+this.gongren);
+    }
+    gongchang.chanxie=function(){
+        alert('产鞋子')
+    }
+    gongchang.chanyunshu=function(){
+        alert('运输');
+    }
+    gongchang.changzhang=function(para){
+        return new gongchang[para]();
+    }
+    var me=gongchang.changzhang('chanyifu');
+    alert(me.gongren);
+    /*
+    var XMLHttpFactory(){
+
+    };
+    XMLHttpFactory.createXMLHttp=function(){
+        var XMLHttp=null;
+
+    }
+    */
+</script>
+</body>
+</html>

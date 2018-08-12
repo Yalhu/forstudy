@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+    //1创建特定雷系nag的对象
+    //2这样的命名会被人笑话
+    //3JS建议开发写单引号
+    //4js构造函数比较特殊的地方new
+    //5,js中没有关键字A class
+    //zaomen 就是构造函数，有充当了类的概念
+    var AA={
+        zaomen:function(huawen){
+            if (!(this instanceof zaomen)) {
+                return new zaomen();//指向当前父类，解除需要new的影响
+            };
+            var _huawen = 'normal';
+            if (huawen) {
+                _huawen = huawen;
+            };
+            this.suo = 'normal';
+            this.huawen = _huawen;
+            this.create = function () {
+                return '锁头：' + this.suo + '花纹：' + this.huawen;
+            };
+        }
+    };
+    var BB={
+        zaomen:function(huawen){
+            if (!(this instanceof zaomen)) {
+                return new zaomen();
+            };
+            var _huawen = 'normal';
+            if (huawen) {
+                _huawen = huawen;
+            };
+            this.suo = 'normal';
+            this.huawen = _huawen;
+            this.create = function () {
+                return '锁头：' + this.suo + '花纹：' + this.huawen;
+            };
+        }
+    };
+    /*function zaomen(huawen){
+        if(!(this instanceof zaomen)){
+            return new zaomen();
+        };
+        var _huawen='normal';
+        if(huawen){
+            _huawen=huawen;
+        }
+        this.suo='normal';
+        this.huawen=_huawen;
+        this.create=function(){
+            return '锁头：'+this.suo+'花纹：'+this.huawen;
+        }
+    }*/
+    var zhang=new AA.zaomen();
+    alert('zhang'+zhang.create());
+    var li=new BB.zaomen('beautiful');
+    alert('li'+li.create())
+    //单例和构造的配合，AA,BB
+</script>
+</body>
+</html>

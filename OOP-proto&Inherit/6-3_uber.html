@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>uber-子对象访问父对象的方式</title>
+    <style></style>
+</head>
+<body>
+
+
+<script>
+    //传统面向对象提供，子类访问父类（超类）的特殊语法，
+        // js没有，下面实现
+    function Shape(){}
+    Shape.prototype.name='shape'
+    Shape.prototype.toString=function(){
+        var result=[];
+        if(this.constructor.uber){
+            result[result.length]=this.constructor.uber.toString();
+        }
+        result[result.length]=this.name;
+        return result.join(', ')
+    }
+
+    function TwoDShape(){}
+    var F=function(){}
+    F.prototype=Shape.prototype;
+    TwoDShape.prototype=new F();
+    TwoDShape.prototype.constructor=TwoDShape;
+    //uber
+    TwoDShape.uber=Shape.prototype;
+    TwoDShape.prototype.name='2D shape';
+
+    function Triangle(side,height){
+        this.side=side;
+        this.height=height;
+    }
+    var F=function(){}
+    F.prototype=TwoDShape.prototype;
+    Triangle.prototype=new F();
+    //Triangle.prototype=TwoDShape.prototype;
+    Triangle.prototype.constructor=Triangle;
+    Triangle.uber=TwoDShape.prototype;
+    Triangle.prototype.name='Triangle'
+    Triangle.prototype.getArea=function() {
+        return this.side * this.height/2;
+    }
+
+    //因而，当调用Tri实例的toString（），原型链都调用
+    var my=new Triangle(5,10)
+    console.log(my.toString())//shape, 2D shape, Triangle
+
+//原本应该是superclass，js有了类概念---否定了
+    //或者super（像java一样），js中保留字
+    //采用德语super同义词  uber
+</script>
+</body>
+</html>

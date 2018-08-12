@@ -1,0 +1,15 @@
+canvas {
+  width: 600px;
+  height: 400px;
+  border: 1px solid #000;
+  background: #eee;
+}
+.board {
+  position: relative;
+}
+.play {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: transparent;
+}

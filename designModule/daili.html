@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function maijia(argument){
+        this.name='小明';
+    }
+    function zhongjie(){
+
+    }
+    zhongjie.prototype.maifang=function(){
+        new fangdong(new maijia()).maifang('20万')
+    }
+    function fangdong(maijia){
+        this.maijia_name=maijia.name;
+        this.maifang=function(money){
+            alert('收到了来自'+this.maijia_name+money+'人民币')
+        }
+    }
+    (new zhongjie).maifang();
+</script>
+</body>
+</html>

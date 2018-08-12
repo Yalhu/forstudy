@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>案例学习：图形绘制</title>
+    <style></style>
+</head>
+<body>
+
+<!--<canvas height="600" width="800" id="canvas"></canvas>-->
+<canvas height="600" width="800" id="canvas"/>
+
+<script>
+//6-14,小结
+//6.15.1分析
+//6.15.2实现
+    function Point(x,y){
+        this.x=x;
+        this.y=y;
+    }
+    function Line(p1,p2){
+        this.p1=p1;
+        this.p2=p2;
+        this.length=Math.sqrt(Math.pow(p1.x-p2.x,2)+Math.pow(p1.y-p2.y,2))
+    }
+
+    function Shape(){
+        this.points=[];
+        this.lines=[];
+        this.init();
+    }
+    Shape.prototype={
+        constructor:Shape,
+        init:function(){
+            if(typeof this.context==='undefined'){
+                var canvas=document.getElementById('canvas');
+                Shape.prototype.context=canvas.getContext('2d');
+            }
+        },
+        draw:function(){
+            var ctx=this.context;
+            ctx.strokeStyle=this.getColor();
+            ctx.beginPath();
+            ctx.moveTo(this.points[0].x,this.points[0].y);
+            for(var i=1;i<this.points.length;i++){
+                ctx.lineTo(this.points[i].x,this.points[i].y)
+            }
+            ctx.closePath();
+            ctx.stroke();
+        },
+        getColor:function(){
+            var rgb=[];
+            for(var i=0;i<3;i++){
+                rgb[i]=Math.round(255*Math.random())
+            }
+            return 'rgb('+rgb.join(',')+')';
+        },
+        getLines:function(){
+            if(this.lines.length>0){
+                return this.lines;
+            }
+            var lines=[];
+            for(var i=0;i<this.points.length;i++){
+                lines[i]=new Line(this.points[i],
+                        (this.points[i+1])?this.points[i+1]:this.points[0])
+            }
+            this.lines=lines;
+            return lines;
+        },
+        getArea:function(){},
+        getPerimeter:function(){
+            var lines=this.getLines();
+            var perim=0;
+            for(var i=0;i<lines.length;i++){
+                perim+=lines[i].length;
+            }
+            return perim;
+        }
+    }
+
+    function Triangle(a,b,c){
+        this.points=[a,b,c];
+        this.getArea=function(){
+            var p=this.getPerimeter();
+            var s=p/2;
+            return Math.sqrt(s
+                            *(s-this.lines[0].length)
+                            *(s-this.lines[1].length)
+                            *(s-this.lines[2].length)
+            );//海伦公式
+        }
+    }
+
+    function Rectangle(p,side_a,side_b){
+        this.points=[
+                p,
+                new Point(p.x+side_a, p.y),
+                new Point(p.x+side_a, p.y+side_b),
+                new Point(p.x, p.y+side_b)
+        ];
+        this.getArea=function(){
+            return side_a*side_b;
+        }
+    }
+    //正方形重用长方形
+    function Square(p,side){
+        Rectangle.call(this,p,side,side)
+    }
+
+    /*几乎所有的仿传统模式（即工作方式是基于构造器而非对象的模式）都是这样做的
+        下面，试着将其改为原型链模式，并提供一个简化版本（第一种方法本章之前已经讨论过了）
+        在该模式中，、、、
+    **/
+    (function(){
+        var s=new Shape();
+        Triangle.prototype=s;
+        Rectangle.prototype=s;
+        Square.prototype=s;
+    })()
+
+    //6.15.3测试
+    var p1=new Point(100,100);
+    var p2=new Point(300,100);
+    var p3=new Point(200,0);
+
+    var t=new Triangle(p1,p2,p3);
+    t.draw();
+    console.log(t.getPerimeter());//482.842712474619
+    console.log(t.getArea());//10000.000000000002
+
+    var r=new Rectangle(new Point(200,200),50,100);
+    r.draw();
+    console.log(r.getPerimeter());//300
+    console.log(r.getArea());//5000
+
+    var s=new Square(new Point(130,130),50);
+    s.draw();
+    console.log(s.getPerimeter());//200
+    console.log(s.getArea());//2500
+
+    s2=new Square(p1,200).draw();
+
+</script>
+</body>
+</html>

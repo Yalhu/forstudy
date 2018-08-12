@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用面向对象方式重写电话本程序</title>
+</head>
+<body>
+
+<script>
+    function PhonebookManager(o) {
+        //this._phonebook=null;
+        this._phonebook=o;
+    }
+    PhonebookManager.prototype={
+        getTel:function(oName){
+            var tel='';
+            for(var i=0;i<this._phonebook.length;i++){
+                if(this._phonebook[i].name==oName){
+                    tel=this._phonebook[i].tel;
+                    break;
+                }
+            }
+            return tel;
+        },
+        addItem:function(oName,oTel){
+            this._phonebook.push({name:oName,tel:oTel});
+        },
+        removeItem:function(oName){
+            var n;
+            for(var i=0;i<this._phonebook.length;i++){
+                if(this._phonebook[i].name==oName){
+                    n=i;
+                    break;
+                }
+            }
+            if(n!=undefined){
+                this._phonebook.splice(n,1);
+            }
+        }
+    };
+    //使用
+    var myPhonebookManager=new  PhonebookManager([
+        {name:"sdf",tel:"11111"},
+        {name:"adsdf",tel:"22222"},
+        {name:"sdfs",tel:"333"},
+        {name:"adf",tel:"4444"}
+    ]),
+    myPhonebookManager2=new  PhonebookManager([
+        {name:"tianjia",tel:"11111"},
+        {name:"sss",tel:"22222"},
+        {name:"dddd",tel:"333"}
+    ]);
+
+    //
+    var str=myPhonebookManager.getTel('tianjia');
+    console.log(str);//""
+    myPhonebookManager.addItem('tianjia','88888');
+    str=myPhonebookManager.getTel('tianjia');
+    console.log(str);//88888
+    myPhonebookManager.removeItem('tianjia');
+    str=myPhonebookManager.getTel('tianjia');
+    console.log(str);// ""
+
+    str=myPhonebookManager2.getTel('tianjia');
+    console.log(str);//11111
+
+</script>
+</body>
+</html>

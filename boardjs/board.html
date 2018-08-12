@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>board js</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="board.css">
+    </head>
+    <body>
+        <div class="board">
+            <canvas class="back "></canvas>
+            <canvas class="operate" style="display:none"></canvas>
+            <canvas class="play"></canvas>
+        </div>
+        <div class="opetate">
+            <button id="btn">选区（矩形，其它）</button>
+            <button id="btn">选择/位移</button>
+            <button id="btn">旋转</button>
+            <button id="btn">缩放</button>
+            <button id="btn">撤消</button>
+            <button id="btn">恢复</button>
+            <button id="btn">删除</button>
+            <button id="btn" onclick="myboard.clear('ctxB')">清空</button>
+            <button id="btn" onclick="myboard.getImgData()">获取图片对象</button>
+            <button id="btn" onclick="myboard.toDataURL()">获取url</button>
+            <button id="btn" onclick="myboard.download()">下载</button>
+            <button id="btn"></button>
+        </div>
+        <div class="control">
+            <button class="ctr" data-shape="laser" id="btn">光标</button>
+            <button class="ctr" data-shape="line" id="btn">直线</button>
+            <button class="ctr" data-shape="rect" id="btn">矩形</button>
+            <button class="ctr" data-shape="circle" id="btn">圆形</button>
+            <button class="ctr" data-shape="pen" id="btn1">铅笔（直线）</button>
+            <button class="ctr" data-shape="penLaser" id="btn1">激光笔（圆点）</button>
+            <button class="ctr" data-shape="eraserCircle" id="btn1">橡皮（圆点）</button>
+            <button class="ctr" data-shape="eraserLine" id="btn">橡皮擦（圈选）</button>
+            <button class="ctr" data-shape="ellipse" id="btn">椭圆</button>
+            <button class="ctr" data-shape="rectangleRound" id="btn">圆角矩形</button>
+            <button class="ctr" data-shape="arrow" id="btn">箭头</button>
+            <input id="range" type="range">
+            <input id="color" type="color">
+        </div>
+        <script src="jquery.1.9.1.min.js"></script>
+        <script src="board.js"></script>
+        <script>
+            var myboard=new board('.back','.operate','.play')
+            myboard.init()
+            $('.ctr').click(function(){
+                // console.log(this.dataset.shape)
+                myboard.widgetCurrent=$(this).attr('data-shape')
+            })
+            $('#range').change(function(){
+                console.log($(this).val())
+                myboard.widgets[myboard.widgetCurrent].style.lineWidth=($(this).val())/4
+            })
+            $('#color').change(function(){
+                console.log($(this).val())
+                myboard.widgets[myboard.widgetCurrent].style.strokeStyle=$(this).val()
+            })
+        </script>
+    </body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>继承</title>
+</head>
+<body>
+
+<script>
+
+    /* # 4.2.1 js定义类***************************************
+    *****************************************************/
+    // ## 0.没有使用原型的方式
+    /* ## 1.1使用原型方式重写*/
+    /* ## 1.2原型的hash对象，写法*/
+    //一般习惯把属性放构造函数，非原型，方便从构造函数接受参数
+
+
+    /* # 4.2.2 共有和私有****************************************
+    ***********************************************************/
+
+    // ## 1.最简单方法：共有方法也写在构造函数中；问题：实例化时都会复制一份
+
+    // ## 2.1 如果对属性和行为的私有性要求不高，常见做法是约定私有行为_siyou；
+        // 问题：命名约定，并不能真正私有
+
+    // ## 2.2.1 极端主义者，直接访问类的属性不好，所有属性都是私有，通过get，set获取和设置
+    // ## 2.2.2比较：set，get相关方法都要放在构造函数中-VS 所有方法都放在构造函数中，会占用更多内存
+    //但可以更好的保护属性：例如：Animal类的name只能为wangcai或xiaoqiang，type为只读
+    // ## 2.2.3
+    //(你当然可以在编程的时候小心地注意那些属性有什么限制要求，不通过set，get方法对属性进行保护，任然使用this.xxx对属性直接读写，从而节省一点内存。
+    //对于简单应用，作者推荐this.xxx来读写;
+    //更复杂的应用，对扩展性和健壮性要求很高，此时用set和get方法读取属性更合适)
+    //另外，如果使用set设置属性，那么就有了监听valueChange的入口
+    //真实世界中，我们的很多思维习惯都是状态驱动的，编程时监听属性的valueChange事件可以帮我们更接近真实世界的思维习惯
+
+
+    /* # 4.2.3 继承****************************************
+    ******************************************************/
+    /* ## 1 原始
+    //Animal类
+    function Animal(name){
+        this.name=name;
+        this.type="animal";
+    }
+    Animal.prototype={
+        say:function(){
+            console.log("I'm a "+this.type+" ,my name is"+this.name);
+        }
+    }
+    //Bird类
+    function Bird(name){
+        this.name=name;
+        this.type="animal";
+    }
+    Bird.prototype={
+
+    }
+    //实例化Bird对象
+    var myBird=new Bird("xiaocui");
+    console.log(myBird.type);*/
+
+    // ## 2违反DRY，===》改进
+    //Animal类
+    function Animal(name){
+        this.name=name;
+        this.type="animal";
+    }
+    Animal.prototype={
+        say:function(){
+            console.log("I'm a "+this.type+" ,my name is"+this.name);
+        }
+    }
+    //Bird类
+    function Bird(name){
+        Animal(name);//相当于window.name="";window.type=""
+    }
+    //实例化Bird对象
+    var myBird=new Bird("xiaocui");
+    console.log(myBird.type);//undefined
+    // ## 2.1this调用方式，函数两种调用方式，函数--window；构造函数--实例对象==>
+    //Bird类
+    function Bird(name){
+        Animal.call(this,name);//改进的地方
+    }
+    // ## 2.2上面构造函数的继承已经完成，接下来继承原型
+    Bird.prototype=Animal.prototype;
+    myBird.say();//I'm animal,my name is xiaoqiang
+
+    // ## 2.3并不简单，如果添加fly
+    Bird.prototype.fly=function(){
+        console.log("I'm flying");
+    }
+    var myDog=new Animal("wangcai");
+    myDog.fly();//旺财 尽然可以飞了
+    //传值，传址
+    //2.3.1 简单方法：遍历数组或hash对象，将复杂数据拆成简单数据，然后分别赋值
+    var a=[1,3,4],b={name:"adang",sex:"male",tel:"werwr"};
+    var c=[],d={};
+    for(var p in a){
+        c[p]=a[p];
+    }
+    for(var p in b){
+        d[p]=b[p];
+    }
+    c.push("4");
+    d.email="sdfs@gmail.com";
+    console.log(a);
+    console.log(c);
+    console.log(b.email);
+    console.log(d.email);
+    //值得一提，数组的传值还可以用数组的concat和slice方法实现
+    var a=[1,2,3];
+    var b=a.slice(),c=a.concat();
+    b.pop();
+    c.push(4);
+    console.log(a);//1,2,3
+    console.log(b);//1,2
+    console.log(c);//1,2,3，4
+
+    //2.3.2 另一种方法proto传值，New SomeFunction（prototype和function的关系：用作类的function）
+    Bird.prototype=new Animal();
+    Bird.prototype.constructor=Bird;//因为上面的将Bird.prototype.constructor指向Animal，需纠正，重新指回Bird
+    Bird.prototype.fly=function(){
+        console.log("I'm flying");
+    }
+    //myDog.fly();//报错
+
+    // 2.3.3 进异步将它进行封装
+    function extend(subClass,superClass){
+        var F=function(){};
+        F.prototype=superClass.prototype;
+        subClass.prototype=new F();
+        subClass.prototype.constructor=subClass;
+        subClass.superclass=superClass.prototype;
+        if(superClass.prototype.constructor==Object.prototype.constructor){
+            superClass.prototype.constructor=superClass;
+        }
+    }
+    extend(Bird,Animal);
+    var canary=new Bird("xiaocui");
+    conary.say();
+    conary.fly();
+
+
+</script>
+</body>
+</html>

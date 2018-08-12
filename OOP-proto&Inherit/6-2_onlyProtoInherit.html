@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>只继承于原型</title>
+    <style></style>
+</head>
+<body>
+
+
+<script>
+    //1如前面可重用的添加到原型。若好习惯，仅仅依靠原型完成继承关系
+//（原型中所有代码都是可重用的）Shape.prototype比继承自new Shape()创建的实体好的多
+    //毕竟new Shape()，会将Shape的属性设为对象自身的属性，这样的代码是不可重用的
+
+/*
+    function Shape(){}
+    Shape.prototype.name='shape'
+    Shape.prototype.toString=function(){return this.name}
+
+    function TwoDShape(){}
+//做出修改的部分，测试结果仍相同
+    //TwoDShape.prototype=new Shape();
+    TwoDShape.prototype=Shape.prototype;
+    TwoDShape.prototype.constructor=TwoDShape;
+    //必须在扩展原型对象之前完成继承关系的构建
+    TwoDShape.prototype.name='2D shape';
+
+    function Triangle(side,height){
+        this.side=side;
+        this.height=height;
+    }
+    //Triangle.prototype=new TwoDShape();
+    Triangle.prototype=TwoDShape.prototype;
+    Triangle.prototype.constructor=Triangle;
+    //必须在扩展原型对象之前完成继承关系的构建
+    Triangle.prototype.name='Triangle'
+    Triangle.prototype.getArea=function() {
+        return this.side * this.height/2;
+    }
+
+    //2my.toString()方法的查找有什么不同，1）。。
+        // 2）3，4--》2步了（引用传递，而不是按值传递）
+        //副作用：一旦子对象对原型进行修改，父对象也改，甚至所有继承关系
+    Triangle.prototype.name='Triangle';
+    var s=new Shape();
+    console.log(s.name)//Triangle
+*/
+
+    //3,解决：临时构造器 new F();
+    function Shape(){};
+    Shape.prototype.name='shape';
+    Shape.prototype.toString=function(){return this.name};
+
+    function TwoDShape(){}
+    //临时
+    var F=function(){}
+    F.prototype=Shape.prototype;
+    TwoDShape.prototype=new F();
+    TwoDShape.prototype.constructor=TwoDShape;
+    TwoDShape.prototype.name='2D shape';
+
+    function Triangle(side,height){
+        this.side=side;
+        this.height=height;
+    }
+    //临时
+    var F=function(){}
+    F.prototype=TwoDShape.prototype;
+    Triangle.prototype=new F();
+    //Triangle.prototype=TwoDShape.prototype;
+    Triangle.prototype.constructor=Triangle;
+    Triangle.prototype.name='Triangle'
+    Triangle.prototype.getArea=function() {
+        return this.side * this.height;
+    }
+
+    var my=new Triangle(5,10)
+    console.log(my.toString());//Triangle
+    var s=new Shape();
+    console.log(s.name)//shape
+</script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>观察者模式</title>
+    <style></style>
+</head>
+<body>
+
+
+<script>
+//1、观察者对象，订阅方法，任意对象转为发行商
+var observer={
+    addSubscriber:function(callback){
+        this.subscribers[this.subscribers.length]=callback;
+    },
+    removeSubscriber:function(callback){
+        for(var i=0;i<this.subscribers.length;i++){
+            if(this.subscribers[i]===callback){
+                delete(this.subscribers[i])
+            }
+        }
+    },
+    publish:function(what){
+        for(var i=0;i<this.subscribers.length;i++){
+            if(typeof this.subscribers[i]==='function'){
+                this.subscribers[i](what)
+            }
+        }
+    },
+    make:function(o){
+        for(var i in this){
+            o[i]=this[i]
+            o.subscribers=[];
+        }
+    }
+}
+//2、订阅者
+    var blogger={
+        writeBlogPost:function(){
+            var content='Today is '+new Date();
+            this.publish(content)
+        }
+    }
+    var la_times={
+        newIssue:function(){
+            var paper='Martians have landed on Earth!'
+            this.publish(paper);
+        }
+    }
+    //2.5很容易成为发行商
+    observer.make(blogger)
+    observer.make(la_times)
+
+    //3、两个简单对象
+    var jack={
+        read:function(what){
+            console.log('i just read that '+what)
+        }
+    }
+    var jill={
+        gossip:function(what){
+            console.log('you didn\'t hear it from me,but '+what)
+        }
+    }
+
+
+    //4、他们可以订阅blogger对象
+    blogger.addSubscriber(jack.read);
+    blogger.addSubscriber(jill.gossip);
+    //4.1、当blogger写新的博客
+    blogger.writeBlogPost();
+    //4.2 任何时候jill可以取消订阅
+    blogger.removeSubscriber(jill.gossip)
+    blogger.writeBlogPost();
+
+    //5、jill也可以订阅LA Times
+    la_times.addSubscriber(jill.gossip)
+    //5.1当LATimes发行新的期刊后
+    la_times.newIssue();
+
+</script>
+</body>
+</html>

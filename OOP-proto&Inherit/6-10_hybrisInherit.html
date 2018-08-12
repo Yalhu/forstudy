@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>原型继承与属性拷贝的混合应用</title>
+    <style></style>
+</head>
+<body>
+
+
+<script>
+//使用原型继承的方式克隆clone现存对象
+//而对其他对象使用属性拷贝copy的方式
+    function objectPlus(o,stuff){
+        var n;
+        function F(){};
+        F.prototype=o;
+        n=new F();
+        n.uber=o;
+
+        for(var i in stuff){
+            n[i]=stuff[i];
+        }
+        return n;
+    }
+
+    var shape={
+        name:'shape',
+        toString:function(){
+            return this.name;
+        }
+    };
+    var twoDee=objectPlus(shape,{
+        name:'2d shape',
+        toString:function(){
+            return this.uber.toString()+', '+this.name;
+        }
+    });
+    var triangle=objectPlus(twoDee,{
+        name:'Triangle',
+        getArea:function(){
+            return this.side*this.height/2;
+        },
+        side:0,
+        height:0
+    });
+
+    var my=objectPlus(triangle,{side:4,height:4});
+    console.log(my.getArea());//8
+    console.log(my.toString());//shape, 2d shape, Triangle, Triangle
+        //Triangle的name属性重复两次
+
+    var my=objectPlus(triangle,{side:4,height:4,name:'My 4*4'});
+console.log(my.toString());//shape, 2d shape, Triangle, My 4*4
+</script>
+</body>
+</html>

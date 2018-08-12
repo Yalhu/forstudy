@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>单件模式</title>
+    <style></style>
+</head>
+<body>
+
+
+<script>
+    //8.2.1
+/**创建型，没有类--单件默认
+ * 每个对象都是单件。。不操作，不改变
+ * 1最基本的单件模式实现是使用对象文本标识法
+ * var single={}
+ * **/
+
+//8.2.2
+    //2,类似于类的语法实现，
+    var my_log=new Logger();
+    var other_log=new Logger();
+    console.log(other_log===my_log)//true
+    //想实现尽管多次new 都是同一个，解决
+    //解决1全局变量保存这个唯一的
+        //缺陷，全局变量可能被覆盖
+    function Logger(){
+        if(typeof global_log==='undefined'){
+            global_log=this;
+        }
+        return global_log;
+    }
+    //解决2、构造器属性
+        //Logger构造器的属性是公有的，也可能被覆盖
+    function Logger(){
+        if(typeof Logger.single_instance==='undefined'){
+            Logger.single_instance=this;
+        }
+        return Logger.single_instance;
+    }
+    //解决3、使用私有属性
+
+
+</script>
+</body>
+</html>

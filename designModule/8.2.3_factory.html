@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>工厂模式</title>
+    <style></style>
+</head>
+<body>
+
+
+<script>
+/*创建型，多个相似又不知道先使用那种时
+*  该模式 会自行创建该类型对象（根据具体输入或其他既定规则）
+* **/
+    var MYAPP={}
+    MYAPP.dom={}
+    MYAPP.dom.Text=function(){
+        this.insert=function(where){
+            var txt=document.createTextNode(this.url)
+            where.appendChild(txt)
+        }
+    }
+    MYAPP.dom.Link=function(){
+        this.insert=function(where){
+            var link=document.createElement('a')
+            link.href=this.url;
+            link.appendChild(document.createTextNode(this.url))
+            where.appendChild(link)
+        }
+    }
+    MYAPP.dom.Image=function(){
+        this.insert=function(where){
+            var im=document.createElement('img')
+            im.src=this.url;
+            where.appendChild(txt)
+        }
+    }
+    //三个构造器方法一样，
+        // 不知道先创建那种对象
+    var o=new MYAPP.dom.Image();
+    o.url='http://sds.cn';
+    o.insert(document.body);
+    var o=new MYAPP.dom.Text();
+    o.url='http://sds.cn';
+    o.insert(document.body);
+    var o=new MYAPP.dom.Link();
+    o.url='http://sds.cn';
+    o.insert(document.body);
+
+    //假设type中包含被创建类型，可以用if或switch
+    /*
+    var o;
+    if(type==='Image'){
+        o=new MYAPP.dom.Image();
+    }
+    if(type==='Link'){
+        o=new MYAPP.dom.Link();
+    }
+    if(type==='Text'){
+        o=new MYAPP.dom.Text();
+    }
+    o.url='sd';
+    o.insert();
+    */
+
+    //如果构造器很多，代码很长，或不知道构造器函数的名字
+    //委托给一个工厂函数，替换3个if
+    MYAPP.dom.factory=function(type){
+        return new MYAPP.dom[type];
+    }
+    var o=MYAPP.dom.factory(type)
+    o.url='sdfs';
+    o.insert();
+    //实际使用，type参数进行相关验证，并对所有对象做一些相同设置
+</script>
+</body>
+</html>

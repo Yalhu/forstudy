@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<script>
+    //li call wang ,door,messages
+     var wang=(function(argument){
+         var wangjia=function(message){
+             this.menling=message;
+         }
+         var men;
+         var info={
+             sendM:function(message){
+                if(!men){
+                    men=new wangjia(message)
+                }
+                 return men;
+             }
+         }
+         return info;
+     })();
+    var li={
+        callW:function(msg){
+            var _xw=wang.sendM(msg);
+            alert(_xw.menling);
+            _xw=null;//等待垃圾回收
+        }
+    }
+    li.callW('didi');
+    //new 的成本，闭包
+</script>
+<script>
+    //页面上有6个按钮
+    var top={
+        init:function(){
+            this.render();
+            this.bind();
+        },
+        a:4,
+        render:function(){
+            var me=this;
+            me.btna=$('#a');
+        },
+        bind:function(){
+            var me=this;
+            me.btna.click(function(){
+                //业务逻辑取出去
+                me.test();
+            })
+        },
+        test:function(){
+            a=5;
+        }
+    };
+    var banner={
+        init:function(){
+            this.render();
+            this.bind();
+        },
+        a:4,
+        render:function(){
+            var me=this;
+            me.btna=$('#d');
+        },
+        bind:function(){
+            var me=this;
+            me.btna.click(function(){
+                //业务逻辑取出去
+                me.test();
+            })
+        },
+        test:function(){
+            //a=6;
+            top.a=6;
+        }
+    };
+    //自己保护自己，系统中只有一个，
+    //对应逻辑封装到对应的模块中，代码更可靠
+    top.init();
+    banner.init();
+    /*
+    $('#a').click(function(){
+        var a=4;
+    });
+    $('#b').click(function(){
+
+    });
+    $('#c').click(function(){
+
+    });
+    $('#d').click(function(){});
+    $('#e').click(function(){});
+    $('#f').click(function(){});
+    */
+</script>
+</body>
+</html>

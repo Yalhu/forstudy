@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>构造函数继承</title>
+    <style></style>
+</head>
+<body>
+
+
+<script>
+    //1
+    function Shape(){
+        this.name='shape';
+        this.toString=function(){
+            return this.name;
+        }
+    }
+    function TwoDShape(){
+        this.name='2D shape';
+    }
+    function Triangle(side,height){
+        this.name='Triangle'
+        this.side=side;
+        this.height=height;
+        this.getArea=function(){
+            return this.side*this.height;
+        }
+    }
+    //2开始继承
+    TwoDShape.prototype=new Shape();
+    Triangle.prototype=new TwoDShape();
+    //TwoDShape.prototype.constructor改变了，所以  重新设置
+    //console.log(TwoDShape.prototype.constructor);
+        // function Shape(){
+    TwoDShape.prototype.constructor=TwoDShape;
+    Triangle.prototype.constructor=Triangle;
+
+    //3test
+    var my=new Triangle(5,10)
+    console.log(my.getArea())//50
+    console.log(my.toString())//Triangle
+    console.log(my.constructor);//function Triangle(side,height){
+    console.log(my instanceof Shape);//true
+    console.log(my instanceof TwoDShape);//true
+    console.log(my instanceof Triangle);//true
+    console.log(my instanceof Array);//false
+    //isPrototypeOf()方法一样，做了一个测试
+    console.log(Shape.prototype.isPrototypeOf(my));//true
+
+
+	// 6-1.2 
+	//共有属性，方法添加到原型对象中去,所有测试同样可以通过
+    function Shape(){}
+    Shape.prototype.name='shape'
+    Shape.prototype.toString=function(){return this.name}
+
+    function TwoDShape(){}
+    TwoDShape.prototype=new Shape();
+    TwoDShape.prototype.constructor=TwoDShape;
+    //必须在扩展原型对象之前完成继承关系的构建
+    TwoDShape.prototype.name='2D shape';
+
+    //Triangle稍微不同
+    function Triangle(side,height){
+        this.side=side;
+        this.height=height;
+    }
+    Triangle.prototype=new TwoDShape();
+    Triangle.prototype.constructor=Triangle;
+    //必须在扩展原型对象之前完成继承关系的构建
+    Triangle.prototype.name='Triangle'
+    Triangle.prototype.getArea=function(){
+        return this.side*this.height;
+    }
+</script>
+</body>
+</html>

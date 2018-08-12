@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>将继承封装成函数</title>
+    <style></style>
+</head>
+<body>
+
+
+<script>
+    function extend(Child,Parent){
+        var F=function(){}
+        F.prototype=Parent.prototype;
+        Child.prototype=new F();
+        Child.prototype.constructor=Child;
+        Child.uber=Parent.prototype;
+    }
+
+    extend(TwoDShape,Shape);
+    extend(Triangle,TwoDShape);
+
+//YUI(Yahoo! User Interface) 库在实现继承关系所采用的方法
+    //YAHOO.lang.extend(TwoDShape,Shape);
+</script>
+</body>
+</html>

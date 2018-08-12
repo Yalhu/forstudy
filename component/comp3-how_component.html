@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style></style>
+</head>
+<body>
+
+
+<script>
+
+var myapp={
+//    数据层
+    data: null,
+    choseT: 0,
+    choseF: 0,
+    getDataStatistics: function() {
+        var list = this.data;
+        var choseT = 0;
+        var choseF = 0;
+        var len = list.length;
+        for (var i = 0; i < list.length; i++) {
+            if(list[i].checked == 'checked') {
+                choseT++;
+            }else {
+                choseF++;
+            }
+        }
+        return {
+            choseT: choseT,
+            choseF: choseF,
+            len: len
+        };
+    },
+    dataChangeAll: function(checked) {
+        var list = this.data;
+        var len = list.length;
+        checked = checked || '';
+        if(checked == 'checked') {
+            this.choseT = len;
+            this.choseF = 0;
+        }else {
+            this.choseT = 0;
+            this.choseF = len;
+        }
+
+        for (var i = 0; i < len; i++) {
+            list[i].checked = checked;
+        }
+    },
+    dataChangeSingle: function(index, checked) {
+        var list = this.data;
+        var choseT = this.choseT;
+        var choseF = this.choseF;
+        if(checked == 'checked') {
+            choseT++;
+            choseF--;
+        }else {
+            choseT--;
+            choseF++;
+        }
+        this.choseT = choseT;
+        this.choseF = choseF;
+        list[index].checked = checked;
+    }
+
+
+//表现层
+//
+//说白了表现层也就是template层或者view层，就是用户所看到的，一般会用一个比较成熟的ui库，比如bootstrap。
+
+    getHtml: function(list, statistic) {
+        var html =
+                ['<div class="sales-dialog">',
+                    '<div>',
+                    '<div class="tag-box-chose J_view_checkNav">',
+                    this.getChoseNav(statistic),
+                    '</div>',
+                    '<div class="mt_10 J_view_checkItems">',
+                    this.getChoseItem(list),
+                    '</div>',
+                    '</div>',
+                    '</div>'].join('');
+        return html;
+    },
+    getChoseNav: function(statistic) {
+        var checkAll = '';
+        var checkNone = '';
+        var len = statistic.len;
+        if(statistic.choseT == len) {
+            checkAll = 'checked';
+        }
+        if(statistic.choseF == len) {
+            checkNone = 'checked';
+        }
+        return [
+            '<label class="tag '+checkAll+'">',
+            '<input type="radio" name="radio-grade input-fat" class="J_view_checkAll" '+checkAll+' />',
+            '<span class="tag-tit">全选</span>',
+            '</label>',
+            '<label class="tag '+checkNone+'">',
+            '<input type="radio" name="radio-grade" class="J_view_checkNone" '+checkNone+'/>',
+            '<span class="tag-tit">全不选</span>',
+            '</label>'
+        ].join('');
+    },
+    getChoseItem: function(list) {
+        var inputs = '';
+        var doInputFunc = function(i, detail) {
+            return [
+                '<div style="display:inline-block;width:150px;">',
+                '<label data-toggle="checkbox" class="checkbox-pretty inline '+detail.checked+'">',
+                '<input type="checkbox" value="'+i+'" class="J_view_checkItem " '+detail.checked+'><span>'+detail.name+'</span>',
+                '</label>',
+                '</div>',
+            ].join('');
+        };
+
+        for (var i = 0; i < list.length; i++) {
+            inputs += doInputFunc(i, list[i]);
+        }
+        return inputs;
+    },
+    domAction: function($el, type, data) {
+        var html = '';
+        type = type || 'all';
+        if(type == 'item') {
+            html = this.getChoseItem(data);
+            $el.find('.J_view_checkItems').html(html);
+        }else if(type == 'all') {
+            html = this.getChoseNav(data);
+            $el.find('.J_view_checkNav').html(html);
+        }
+    },
+
+//逻辑层
+//
+//这层主要做 调用template方法将数据渲染到页面上；将页面上的一些事件结果，映射到数据层。其实现在流行的MVVM模式，就是在逻辑层这里做了更多的事情，只是开发者们不用去关心细节处理，更专注业务的开发。
+
+    eventBind: function($el) {
+        var _this = this;
+        var $target = '';
+
+        // 全选
+        $el.on('change', '.J_view_checkAll', function() {
+            if(!$(this).parent().hasClass('checked')) {
+                _this.module.dataChangeAll('checked');
+                _this.view.domAction($el, 'all', _this.module.getDataStatistics());
+                _this.view.domAction($el, 'item', _this.module.data);
+            }
+        });
+
+        // 全不选
+        $el.on('change', '.J_view_checkNone', function() {
+            if(!$(this).parent().hasClass('checked')) {
+                _this.module.dataChangeAll('');
+                _this.view.domAction($el, 'all', _this.module.getDataStatistics());
+                _this.view.domAction($el, 'item', _this.module.data);
+            }
+        });
+
+        // 单个
+        $el.on('click', '.J_view_checkItem', function() {
+            $target = $(this);
+            var index = $target.val();
+            var checked = '';
+            if($target.prop('checked')) {
+                checked = 'checked';
+            }
+            _this.module.dataChangeSingle(index, checked);
+            _this.view.domAction($el, 'all', _this.module.getDataStatistics());
+        });
+    },
+    eventUnbind: function($el) {
+        $el.off('change');
+        $el.off('click');
+    }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>构造器借用</title>
+    <style></style>
+</head>
+<body>
+
+
+<script>
+//构造器盗用，或borrowing a constructor
+    /*function Shape(id){
+        this.id=id;
+    }
+    Shape.prototype.name='shape';
+    Shape.prototype.toString=function(){return this.name};
+    /*
+    function Triangle(){
+        Shape.apply(this,arguments);
+    }
+    Triangle.prototype.name='Triangle';
+    //各种原型中添加了额外的属性
+
+    var t=new Triangle(101);
+    console.log(t.name)
+    //0继承了id属性，但并没有继承父对象原型中的其他任何东西
+        //因为没有调用new Shape()创建任何一个实例，自然其原型也没有用的
+    console.log(t.id)//101
+    console.log(t.toString())//'[object Object]'
+    */
+    //1重定义
+    /*function Triangle(){
+        Shape.apply(this,arguments);
+    }
+    Triangle.prototype=new Shape();
+    Triangle.prototype.name='Triangle';
+    var t2=new Triangle(101);
+    console.log(t2.toString())//Triangle
+    */
+    //2优点：创建继承于数组或其他对象类型的子对象，获得新值，不是引用，不会改变父对象
+    //缺点：父对象构造器调用两侧：apply,new.父对象自身属性被继承了两次
+    /*
+    function Shape(id){
+        this.id=id;
+    }
+    function Triangle(){
+        Shape.apply(this,arguments);
+    }
+    //与下面不同方式实现继承
+    Triangle.prototype=new Shape(101);
+
+    var t=new Triangle(202);
+    console.log(t.id)//202,自身属性，非原型链
+    console.log(t.__proto__.id);//101
+    delete t.id;
+    console.log(t.id)//101
+    */
+
+    //3更正：借用构造器与原型复制
+    function extend2(Child,Parent){
+        var p=Parent.prototype;
+        var c=Child.prototype;
+        for(var i in p){
+            c[i]=p[i];
+        }
+        c.uber=p;
+    }
+    function Shape(id){
+        this.id=id;
+    }
+    Shape.prototype.name='shape';
+    Shape.prototype.toString=function(){return this.name};
+    function Triangle(){
+        Shape.apply(this,arguments);
+    }
+    //这里是更正的地方
+    extend2(Triangle,Shape);
+    Triangle.prototype.name='Triangle';
+
+    var t=new Triangle(101);
+    console.log(t.toString())//Triangle
+    console.log(t.id)//101
+    console.log(typeof t.__proto__.id)//undefined
+    //双重继承没有了
+    console.log(t.uber.name)//shape
+</script>
+</body>
+</html>
