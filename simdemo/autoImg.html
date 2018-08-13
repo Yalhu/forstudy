@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+    <head>
+        <title>图片百分比扩展且居中</title>
+        <meta charset="utf8">
+        <style>
+            .wrapper{
+				float:left;/*和imgauto没有关系*/
+				margin-right:10px;/*和imgauto没有关系*/
+                width:300px;  
+                height:300px;  
+                border:solid 1px #000;  
+                background-color:red;  
+                background-image:url(images/y_index_home.png); /*图片地址*/  
+                background-origin:content;                /*从content区域开始显示背景*/  
+                background-position:50% 50%;              /*图片上下左右居中*/  
+                background-size:contain;                  /*保持图像本身的宽高比例，将图片缩放到宽度或高度正好适应定义背景的区域*/  
+                background-repeat:no-repeat;              /*图像不重复显示*/  
+            }
+			.donghua1{background-image:url(images/donghua1.jpg); /*图片地址*/  }
+			.donghua3{background-image:url(images/donghua3.jpg); /*图片地址*/  }
+			.donghua4{background-image:url(images/donghua4.jpg); /*图片地址*/  }
+        </style>
+    </head>
+    <body>
+        <h1>图片百分比扩展，且居中</h1>
+        <div class="wrapper donghua1"></div>
+		<div class="wrapper donghua3"></div>
+		<div class="wrapper donghua4"></div>
+    </body>
+</html>
