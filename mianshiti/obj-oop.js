@@ -1,4 +1,4 @@
-
+/* =========================================================== */
 // # 36ke 
 var myObject={
   foo:"bar",
@@ -14,6 +14,8 @@ var myObject={
 }
 myObject.func()
 
+
+/* =========================================================== */
 // # maida shuzi
 var name="global"
 var oo={
@@ -31,6 +33,7 @@ var ooo={
 }
 console.log(ooo.getName()) // 'ooo'
 
+/* =========================================================== */
 // # [记Javascript一道题的理解..]
 function Foo(){
   getName = function(){ console.log("1"); }
@@ -56,9 +59,9 @@ new Foo.getName(); //2 => new (Foo.getName)() new无参数列表
 new Foo().getName(); // 3 => (new Foo()).getName(); //new有参数列表
 new new Foo().getName(); //3 => new ((new Foo()).getName)() //new有参数列表
 
+/* =========================================================== */
 // # mianshiti-laoshi-201604
 // ## day02
-/*
 window.a=300;
 function fn1(){
   this.a=100;
@@ -75,8 +78,7 @@ var a=new fn1().b;//300
 var v=new fn1(fn2());//200
   //a:{a:100,b:200}
                       //[object Object]
-*/
-/*
+/* _____________________________ */
 //如果构造函数结尾返回一个引用类型的对象，则不再创建新对象。
 function Human(){
   var c=function(){var a=200;}
@@ -87,8 +89,7 @@ var feng=Human();
 var x=Human();
 console.log(feng==x);//false
 console.log(kang===feng);//false
-*/
-/*
+/* _____________________________ */
 var arr=[];
 function fun(){
   for(var i=0;i<4;i++){
@@ -110,17 +111,16 @@ arr[0].fun();//4
 arr[1].fun();//4
 arr[2].fun();//4
 arr[3].fun();//4
-*/
-/*
+/* _____________________________ */
 var setObj=function(o){
   o.name="xiaoming";
   o={};
-  o.name="xiaohong"；
+  o.name="xiaohong";
 }
 var p={name:"xixi",age:24};
 setObj(p);
 console.dir(p);//xiaoming 24
-*/
+/* _____________________________ */
 var number=2;//4
 var obj={
   number:4,//8
@@ -149,65 +149,61 @@ obj.fn1();//27
 alert(window.number);//8
 alert(obj.number);//8
 
+/* _____________________________ */
 // ## day03
-/*
-  var x=5,o={
-    x:10,
-    doit:function doit(){
-      var x=20;
-      setTimeout(
-        function(){alert(this.x)},10
-      )
-    }
-  }
-  alert(o.doit());//undefined
-  //function(){alert(this.x)} //5
-*/
-/*
-  function Foo(){
+var x=5,o={
+x:10,
+doit:function doit(){
+    var x=20;
+    setTimeout(
+    function(){alert(this.x)},10
+    )
+}
+}
+alert(o.doit());//undefined
+//function(){alert(this.x)} //5
+/* _____________________________ */
+function Foo(){
     getName=function(){alert(1);};
     return this;
-  }
-  Foo.getName=function(){alert(2);}
-  Foo.prototype.getName=
-    function(){alert(3)};
-  var getName=function(){alert(4);};
-  function getName(){alert(5);}
-  Foo.getName();//2
-  getName();//4
-  Foo().getName();//1
-  //getName:function(){alert(1);};
-  //window.getName();
-  getName();//1
-  new Foo.getName();//2
-  new Foo().getName();//3
-      //obj.getName();
-  new new Foo().getName();//3
-      //new obj.getName()
-*/
-/*
-  var a=1;
-  var b={
+}
+Foo.getName=function(){alert(2);}
+Foo.prototype.getName=
+function(){alert(3)};
+var getName=function(){alert(4);};
+function getName(){alert(5);}
+Foo.getName();//2
+getName();//4
+Foo().getName();//1
+//getName:function(){alert(1);};
+//window.getName();
+getName();//1
+new Foo.getName();//2
+new Foo().getName();//3
+    //obj.getName();
+new new Foo().getName();//3
+    //new obj.getName()
+/* _____________________________ */
+var a=1;
+var b={
     a:2,
     b:function(){
-      console.log(this.a);//1
+        console.log(this.a);//1
     }(),
     //b:undefined,
     f:this.f=function(){
-      console.log(this.a);
+        console.log(this.a);
     }
     //f:function(){console.log(this.a)}
-  };
-  //对象直接量中不属于任何方法的this，默认都指window
-  function f(){console.log(3);}
-  //f:function(){console.log(this.a);}
-  f();//1
-  b.f();//2
-  (b.f)();//2
-  (0,b.f)();//1
-  //逗号表达式的结果，是最后一个表达式的值
-*/
-/*
+};
+//对象直接量中不属于任何方法的this，默认都指window
+function f(){console.log(3);}
+//f:function(){console.log(this.a);}
+f();//1
+b.f();//2
+(b.f)();//2
+(0,b.f)();//1  //逗号表达式的结果，是最后一个表达式的值
+/* _____________________________ */
 var foo=function(){//0x9091
   console.log(this.a);
 }
@@ -220,7 +216,7 @@ bar2();//2
 foo();//10
 obj.foo();//2
 setTimeout(bar,0);//10
-*/
+/* _____________________________ */
 function MyObj(){
   this.p.pid++;
 }
@@ -232,7 +228,9 @@ var _obj1=new MyObj();
 var _obj2=new MyObj();
 console.log(_obj1.getNum(1)+_obj2.getNum(2));//7
 
-// # 
+
+/* =========================================================== */
+// # 对象方法中 window.name 
 window.name="window"
 var obj={
     name:"obj",
