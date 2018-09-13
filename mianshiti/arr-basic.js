@@ -2,6 +2,12 @@
 var arr=[1,2,3,4,5,6,6];
 arr.sort(()=>{return Math.random()>0.5?1:-1})
 
+const shuffle=arr=>{
+    let r=arr.map(Math.random)
+    return arr.sort((a,b)=>r[a]-r[b])
+}
+shuffle([1,2,3,,5]) // 
+
 
 /* =========================================================== */
 // \# [034-D js如何在一个数组里随机选出不重复...]

@@ -114,3 +114,78 @@ var module = (function() {
 })();
 console.log(module.description); // 输出"this is description" 
 module.add(5);  // 输出“The result is: 10”
+
+
+/* =========================================================== */
+// # [024-D 函数节流与函数防.. ]
+// ## 函数节流和防抖
+// 函数节流: 指定时间间隔内只会执行一次任务；
+// 函数防抖: 任务频繁触发的情况下，只有任务触发的间隔超过指定间隔的时候，任务才会执行。
+function throttle(fn, wait) {
+    var previous = 0
+    var timer = null
+    return function () {
+        var context = this
+        var args = arguments
+        if (!previous) {
+            previous = Date.now()
+            fn.apply(context, args)
+        } else if (previous + wait >= Date.now()) {
+            if (timer) {
+                // console.log(timer)
+                clearTimeout(timer)
+                timer = null
+            }
+            // console.log(timer)
+            timer = setTimeout(function () {
+                // console.log(timer)
+                previous = Date.now()
+                fn.apply(context, args)
+            }, wait)
+        } else {
+            previous = Date.now()
+            fn.apply(context, args)
+        }
+    }
+}
+// 节流：间隔一定时间触发回调来控制函数调用频率  // 拖拽功能，射击游戏，计算鼠标移动的距离，Canvas 模拟画板功能，搜索联想
+    // 监听滚动事件判断是否到页面底部自动加载更多：给 scroll 加了 debounce 后，只有用户停止滚动后，才会判断是否到了页面底部；
+       // 如果是 throttle 的话，只要页面滚动就会间隔一段时间判断一次
+// 去抖：对于连续的事件响应我们只需要执行一次回调 //  resize/scroll 触发统计事件，文本输入的验证（
+function debounce(fn, wait) {
+    var timer = null;
+    return function () {
+        var context = this
+        var args = arguments
+        if (timer) {
+            clearTimeout(timer);
+            timer = null;
+        }
+        timer = setTimeout(function () {
+            fn.apply(context, args)
+        }, wait)
+    }
+}
+
+
+
+
+/* =========================================================== */
+// \# [js使用记录]
+// ## parseInt(string, radix) radix:可选。表示要解析的数字的基数。该值介于 2 ~ 36 之间。
+[1,2,3].map(parseInt)//[1, NaN, NaN]
+[10,10,10].map(parseInt) // [10, NaN, 2]
+// ## numObj.toString([radix])  radix: 指定要用于数字到字符串的转换的基数(从2到36)。如果未指定 radix 参数，则默认值为 10。
+(8).toString(2) //1000
+// ## unicode
+'a'.charCodeAt(0); /*97*/
+'a'.charCodeAt().toString(16); /*61*/
+'\u0061'  /* 'a' */
+'a'.length /* 1 */
+'中'.length /* 1 */
+// ## 随机字符串
+Math.random().toString(36).substr(2); // 
+(Math.random()*Math.pow(2,64)).toString(36) 
+("0000" + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4)  
+
+
