@@ -48,6 +48,17 @@ console.timeEnd("unique3");
 // $_PS: ES6
 [...new Set([1,"1",2,1,1,3])]; // [1, "1", 2, 3]
 
+/* =========================================================== */
+// # [020 精心收集的 48 个 Javas ..]
+// ## 数组去重
+const unique = arr => [...new Set(arr)];
+function removeRepeatArray(arr){ Array.from(newSet(arr)) }
+/* ______________________________________________ */
+// ## 出现次数最多值 的 次数  
+const countOccurrences = (arr, value) => arr.reduce((a, v) => v === value ? a + 1 : a + 0, 0);
+// countOccurrences([1,1,2,1,2,3], 1) -> 3
+
+
 
 /* =========================================================== */
 // # [251-S 前端面试中的常见的.. ]
@@ -73,15 +84,6 @@ function findMaxDuplicateChar(str) {
     }  
     return maxChar; 
 }
-
-/* =========================================================== */
-// # [020 精心收集的 48 个 Javas ..]
-// ## 出现次数最多值 的 次数  
-const countOccurrences = (arr, value) => arr.reduce((a, v) => v === value ? a + 1 : a + 0, 0);
-// countOccurrences([1,1,2,1,2,3], 1) -> 3
-// ## 数组去重
-const unique = arr => [...new Set(arr)];
-function removeRepeatArray(arr){ Array.from(newSet(arr)) }
 
 
 /* =========================================================== */
