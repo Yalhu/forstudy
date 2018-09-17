@@ -18,7 +18,7 @@ for study of web.
 2\. [css样式-立方体](https://yalhu.github.io/forstudy/simdemo/cube-3D.html)     
 3\. [图片自适应扩展](https://yalhu.github.io/forstudy/simdemo/img-autoExtend.html)  
 4\. [可拖拽的九宫格](https://yalhu.github.io/forstudy/simdemo/9grid-dragable.html)  
-5\. [](https://yalhu.github.io/forstudy/simdemo/polygon-joint.html)
+5\. [动态折线背景](https://yalhu.github.io/forstudy/simdemo/polygon-joint.html)     
 6\. [导航条自动隐藏](https://yalhu.github.io/forstudy/simdemo/nav-autoHide/nav-simple.html)     
 7\. [子导航条自动固定](https://yalhu.github.io/forstudy/simdemo/nav-autoHide/nav-subnav.html)   
 8\. [hero导航条自动隐藏/固定](https://yalhu.github.io/forstudy/simdemo/nav-autoHide/nav-hero-subnav.html)   
