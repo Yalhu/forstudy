@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>计时器</title>
+</head>
+<body>
+    <h1>计时器</h1>
+    <div id="">
+        <div id="timer1">00:00:00 0</div> 
+        <button onclick="t1.start()">start</button>
+        <button onclick="t1.pause()">pause</button>
+        <button onclick="t1.clear()">clear</button>
+        
+        <div id="timer2">00:00:00 0</div> 
+        <button onclick="t2.start()">start</button>
+        <button onclick="t2.pause()">pause</button>
+        <button onclick="t2.clear()">clear</button>
+
+        <br><br><br>
+        <button onclick="t1.start();t2.start()">start both</button>
+        <button onclick="t1.pause();t2.pause()">pause both</button>
+        <button onclick="t1.clear();t2.clear()">clear both</button>
+    </div>    
+    <p>
+        用 timeOut模拟interval ：跑一段时间后，这个计时器会落后一点<br/>
+        timer 其他方法：h/m/s ++ 比较<br/>   
+        <a href="https://yalhu.github.io/sum/setTimeout和setInterval/">setTimout和setInterval区别</a>
+    </p>
+    <h2>倒计时</h2>
+    <p>
+        活动页面的倒计时，需要 比较 精准    
+        参考： 
+        <!-- <a href="https://www.xuanfengge.com/js-realizes-precise-countdown.html">JS实现活动精确倒计时</a> -->
+    </p>
+    <script>
+        var Timer={
+            // paused:true,
+            el:null,
+            tid:null,
+            count:0,
+            start:function(){
+                // this.paused=false;
+                this.tid=setInterval(()=>{
+                    this.count=this.count+0.1
+                    this.render(this.count)
+                },100)
+            },
+            render:function(c){
+                this.el.innerHTML=formatT(c);
+            },
+            pause:function(){
+                // this.paused=true
+        
+                clearTimeout(this.tid)
+                this.tid=null
+            },
+            // clear:()=>{  // error: this指向window,定义时所在的对象，而不是使用时所在的对象。
+            clear:function(){
+                clearTimeout(this.tid)
+                this.tid=null
+                // this.paused=false
+                this.count=0
+                this.render(this.count)
+            }
+        }
+        // 用 timeOut模拟interval ：跑一段时间后，这个计时器会落后一点
+        var Timer2={ 
+            el:null,
+            tid:null,
+            count:0,
+            start:function(){
+                this.tid=setTimeout(()=>{
+                    this.count=this.count+0.1
+                    this.render(this.count)
+                    this.start()
+                },100)
+            },
+            render:function(c){
+                this.el.innerHTML=formatT(c);
+            },
+            pause:function(){
+                clearTimeout(this.tid)
+                this.tid=null
+            },
+            clear:function(){
+                clearTimeout(this.tid)
+                this.tid=null
+                this.count=0
+                this.render(this.count)
+            }
+        }
+        var t1=multi(Timer,{el:timer1})
+        // var t2=multi(Timer,{el:timer2})
+        var t2=multi(Timer2,{el:timer2})
+        function multi(){
+            var n={},stuff,j= 0,len=arguments.length;
+            for(var j=0;j<len;j++){
+                stuff=arguments[j];
+                for(var i in stuff){
+                    n[i]=stuff[i];
+                }
+            }
+            return n;
+        }
+        function formatT(c){ // s:2.3s=2s300ms
+            var arr=String(c).split('.')
+            var cs=arr[0]  // seconds
+            cs<0?0.0:cs;
+            // var hm=parseInt(arr[1]) // 小数危机
+            var hm=String(arr[1])[0]
+            if(isNaN(hm)) hm='0'
+            
+            let s=Math.floor(cs%60)
+            let m=Math.floor(cs/60%60)
+            let h=Math.floor(cs/3600)
+            if(isNaN(s)||s===Infinity){
+                h=m=s='00'
+            }
+            h=h>9?h:('0'+h)
+            m=m>9?m:('0'+m)
+            s=s>9?s:('0'+s)
+            return h+':'+m+':'+s+' '+hm
+        }
+
+    </script>
+</body>
+</html>

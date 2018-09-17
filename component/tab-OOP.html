@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>hash对象传参</title>
+    <title>组件-面向对象</title>
     <style>
         ul{padding:0;margin:0;}
         .tab{width:400px;}
@@ -14,6 +14,7 @@
             border:1px solid #333;
             border-bottom:none;
             margin-right:5px;
+            cursor:pointer;
         }
         .tab-contentWrapper{
             border:1px solid #333;
@@ -32,6 +33,7 @@
     </style>
 </head>
 <body>
+<h1>组件-面向对象</h1>
 <div class="tab J_tab">
     <ul class="tab-menuWrapper">
         <li class="J_tab-menu">menu1</li>
@@ -39,19 +41,24 @@
         <li class="J_tab-menu">menu3</li>
     </ul>
     <div class="tab-contentWrapper">
-        <div class="J_tab-content">content1
-            <div>abda</div>
-            <div>sdfs</div>
+        <div class="J_tab-content">
+            content1
+            <div>1-12</div>
+            <div>1-13</div>
         </div>
         <div class="J_tab-content" style="display:none;">
             content2
-            <p>sdfs</p>
+            <div>1-22</div>
+            <div>1-23</div>
         </div>
-        <div class="J_tab-content"  style="display:none;">content3
-            <div>sdf</div>sf
+        <div class="J_tab-content"  style="display:none;">
+            content3
+            <div>1-32</div>
+            <div>1-33</div>
         </div>
     </div>
 </div>
+<br/>
 <div class="tab J_tab">
     <ul class="tab-menuWrapper">
         <li class="J_tab-menu tab-currentMenu underLine">menu1</li>
@@ -59,19 +66,24 @@
         <li class="J_tab-menu">menu3</li>
     </ul>
     <div class="tab-contentWrapper">
-        <div class="J_tab-content">content1
-            <div>abda</div>
-            <div>sdfs</div>
+        <div class="J_tab-content">
+            content1
+            <div>2-12</div>
+            <div>2-13</div>
         </div>
         <div class="J_tab-content" style="display:none;">
             content2
-            <p>sdfs</p>
+            <div>2-22</div>
+            <div>2-23</div>
         </div>
-        <div class="J_tab-content"  style="display:none;">content3
-            <div>sdf</div>sf
+        <div class="J_tab-content"  style="display:none;">
+            content3
+            <div>2-32</div>
+            <div>2-33</div>
         </div>
     </div>
 </div>
+<br/>
 <div class="tab J_tab">
     <ul class="tab-menuWrapper">
         <li class="J_tab-menu  tab-currentMenu2">menu1</li>
@@ -81,19 +93,22 @@
     <div class="tab-contentWrapper">
         <div class="J_tab-content">
             content1
-            <div>abda</div>
-            <div>sdfs</div>
+            <div>3-12</div>
+            <div>3-13</div>
         </div>
         <div class="J_tab-content" style="display:none;">
             content2
-            <p>sdfs</p>
+            <div>3-22</div>
+            <div>3-23</div>
         </div>
         <div class="J_tab-content"  style="display:none;">
             content3
-            <div>sdf</div>sf
+            <div>3-32</div>
+            <div>3-33</div>
         </div>
     </div>
 </div>
+
 <script>
     var GLOBAL={};
     GLOBAL.namespace=function(str){

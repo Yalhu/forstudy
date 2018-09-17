@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>弹幕组件</title>
+    <style>
+        div,p,span{margin:0;padding:0;}
+        #container{
+            position:relative;width:600px;height:300px;border:1px solid #000;
+        }
+        #container p{white-space:nowrap;position:relative;height:30px;line-height: 30px;}
+        /* .msg{position:absolute;left:100%;} */
+        .msg{position:absolute;left:600px}
+        /**********/
+        #danmu1,#danmu2{position:relative;width:600px;height:300px;border:1px solid #000;}
+    </style>
+</head>
+<body>
+    <!--danmu1  -->
+    <div id="danmu1"></div>
+    <div id="msgSend1">
+        <input id="input1" placeholder="请输入要发送的内容" type="text">
+        <button id="send">发送</button>
+        <button id="vip">vip</button>
+        <button id="pause">暂停</button>
+        <button id="move">move</button>
+        <button id="top">top</button>
+        <button id="bottom">bottom</button>
+        <button id="bg">bg</button>
+        <button id="setp2">setp2</button>
+        <button id="setp6">setp6</button>
+        <button id="setp0">setp0</button>
+    </div>
+    <!--danmu2  -->
+    <div id="danmu2">
+        <!-- <p></p> -->
+    </div>
+    <div id="msgSend2">
+        <input id="input2" placeholder="请输入要发送的内容" type="text">
+        <button id="btn2">发送</button>
+        <button id="btn22">暂停</button>
+    </div>
+    <script src="jquery.1.9.1.min.js"></script>
+    <script src="danmu.js"></script>
+    <script>
+        //danmu1
+        var danmu1=new Danmu('#danmu1',3,{top:"20px",fontSize:'20px'});
+        danmu1.init();
+        danmu1.add('dan11sdfsfsfs');
+        danmu1.add('dan11sdf');
+        // danmu1.add('dan11sdfsdfsfsfssfs');
+        danmu1.add('dan11sdfsdfsfsfssfs','#ff0');
+        // danmu1.add('dan11sdfsdfsfsfssfs');
+        danmu1.add('dan11sdfsf');
+        // setTimeout(danmu1.pause.bind(danmu1),2000);
+        $('#send').click(function(){
+            //var newMsg=$('#input1').val().trim();
+            var newMsg=$.trim($('#input1').val());
+            if(newMsg=='')return;
+            danmu1.add(newMsg);
+        });
+        $('#vip').click(function(){
+            var newMsg=$('#input1').val().trim();
+            danmu1.add(newMsg,'#f00');
+        });
+        $('#pause').click(function(){
+            danmu1.pause();
+        });
+        $('#move').click(function(){
+            danmu1.move(); 
+        });
+        $("#top").click(function(){
+            danmu1.style({top:0,bottom:'initial',bottom:'auto'});     
+        });
+        $('#bottom').click(function(){//ie8中，auto需要放在后面
+            danmu1.style({bottom:0,top:'initial',top:'auto'});
+        });
+        $('#setp2').click(function(){
+            danmu1.setP(2);
+        });
+        $('#setp6').click(function(){
+            danmu1.setP(6);
+        });
+        $('#setp0').click(function(){
+            danmu1.setP(0);
+        });
+        $('#bg').click(function(){
+            // danmu1.style({background:'rgba(0,0,0,.4)'});//ie8
+            danmu1.style({background:'#f0f'});
+        });
+        
+    
+        var danmu2=new Danmu('#danmu2',0,{top:"100px",fontSize:'14px',color:"#0f0"});
+        danmu2.init();
+        danmu2.add('dan11sdfsfsfs');
+        danmu2.add('dan11sdf');
+        danmu2.add('dan11sdfsdfsfsfssfs');
+        danmu2.add('dan11sdfsf');
+        //setTimeout(danmu2.pause.bind(danmu2),2000);
+        //setTimeout(danmu2.style({top:"initial",bottom:0}),4000);
+        //danmu2.style({top:'50px'});
+        //danmu2.style({fontSize:'40px'});
+        
+        $('#btn2').click(function(){
+            var newMsg=$('#input2').val().trim();
+            danmu2.add(newMsg);
+        });
+        $('#btn22').click(function(){
+            danmu2.pause();
+        });
+
+
+    /***如果dan需要单独定制，可以写两个对象
+        function Dan(msg,con){
+            this.msgDom=$('<span class="msg">'+msg+'</span>');
+            this.newMsgWidth=$(this.msgDom).width();
+            var _this=this;
+            this.msgDom.hover(function(){
+                _this.stop();
+            },function(){
+                _this.move();
+            });
+        }
+        Dan.prototype={
+            move:function(){
+                this.msgDom.animate({left:-this.newMsgWidth},5000,function(){
+                    $(this).remove();
+                });
+            },
+            stop:function(){
+                this.msgDom.stop();
+            },
+        }
+    */    
+    </script>
+</body>
+</html>

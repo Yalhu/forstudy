@@ -1,3 +1,24 @@
+/**danmu 2017.11.09：整个弹幕是基于字体大小的，也就是说实例化后，就不可以再修改了 
+ * 0.基于字体大小，计算出每行的高度，maxrows；
+ * 1.行数是默认的，可以通过setP函数设置，包括全屏字幕；并不是通过设置弹幕区域
+ * 2.通过style函数，可以设置字幕的位置，背景等；
+ * 如果强行设置字体大小，字幕的行高没有变化，多行之间可能会叠在一起；需要dans数组，并且重新计算，绘制html
+ * 3.改变行数后，需要等当前弹幕结束才可以看到效果；
+ * 如果样式改变后要马上看到效果，原dans数组还要在，需要重新计算，绘制html
+ * 4.重绘好像也简单了：把当前弹幕消息取出来，重新实例化，取出来的消息添加进去；
+ * 缺点：重新绘制的时候，之前的消息会一起涌出
+ * 5.不是一个p走完，删除；添加字幕，再追加。
+ * 如果当前弹幕行数大于设置的弹幕行数，后面中间某一个移除后，后面的行会跳上去
+ * 6.争议：背景设在了外面的div，p没有删除，所以没有弹幕，背景也一直再。
+ * 原因：span绝对定位，没法自动撑开p的高度；
+ * 7.后续：1重绘的实现
+ *  2style,方法两个参数，dom和css，这样就可以给任意的dom设置样式了，包括p,span,container
+ *  3add,方法，可以给一个msg，一个css，结合style，这样弹幕的样式也可以更改了
+ *  4add，方法，能否同时添加多条消息，即参数是按一个对象，还是一个对象数组，或者灵活变动单个msg也是可以得
+ *  5设置弹幕的滚动时间，即添加定时器参数
+**************************************************/
+/* $_20180917:默认移动完已经销毁了，还以为没有做销毁呢 */
+
 function Danmu(dom,rows,css){
     this.dans=[];
     this.wrapper=dom;
@@ -17,7 +38,7 @@ Danmu.prototype={
         color:'#000',
         fontSize:'14px',
     },
-    ped:function(dom,n){
+    ped:function(dom,n){ 
         var arr=[];
         $(dom).children('p:lt('+n+')').each(function(k,val){
             var value=0;
@@ -134,23 +155,25 @@ Danmu.prototype={
         this.style(this.css);
     }
 }
-if (!Array.prototype.indexOf)
-{
-    Array.prototype.indexOf = function(elt /*, from*/)
-    {
-    var len = this.length >>> 0;
-    var from = Number(arguments[1]) || 0;
-    from = (from < 0)
-            ? Math.ceil(from)
-            : Math.floor(from);
-    if (from < 0)
-        from += len;
-    for (; from < len; from++)
-    {
-        if (from in this &&
-            this[from] === elt)
-        return from;
-    }
-    return -1;
+if (!Array.prototype.indexOf){
+    Array.prototype.indexOf = function(elt /*, from*/){
+        var len = this.length >>> 0;
+        var from = Number(arguments[1]) || 0;
+        from = (from < 0)
+                ? Math.ceil(from)
+                : Math.floor(from);
+        if (from < 0)
+            from += len;
+        for (; from < len; from++){
+            if (from in this &&
+                this[from] === elt)
+            return from;
+        }
+        return -1;
     };
+}
+if(!String.prototype.trim){//$.trim()
+    String.prototype.trim=function(){
+        return this.replace(/^\s+|\s+$/g,'');
+    }
 }
