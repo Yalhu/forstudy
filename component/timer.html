@@ -35,6 +35,7 @@
         参考： 
         <!-- <a href="https://www.xuanfengge.com/js-realizes-precise-countdown.html">JS实现活动精确倒计时</a> -->
     </p>
+    <!-- <script src="../lib/jquery.1.11.3.min.js"></script> -->
     <script>
         var Timer={
             // paused:true,
@@ -92,7 +93,8 @@
                 this.render(this.count)
             }
         }
-        var t1=multi(Timer,{el:timer1})
+        var t1=multi(Timer,{el:timer1}) 
+        // var t1=$.extend(true,Timer,{el:timer1}) // jQuery可以用$.extend()
         // var t2=multi(Timer,{el:timer2})
         var t2=multi(Timer2,{el:timer2})
         function multi(){
