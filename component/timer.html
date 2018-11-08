@@ -93,10 +93,15 @@
                 this.render(this.count)
             }
         }
+        // ## 1 Timer1 和Timer2对比
         var t1=multi(Timer,{el:timer1}) 
-        // var t1=$.extend(true,Timer,{el:timer1}) // jQuery可以用$.extend()
         // var t2=multi(Timer,{el:timer2})
+        
+        // ## 2 Timer多实例，3中实现方式
         var t2=multi(Timer2,{el:timer2})
+        // var t1=$.extend(true,Timer,{el:timer1}) // jQuery可以用$.extend()
+        // var t1=Object.assign({},Timer,{el:timer1}) // ES 6
+
         function multi(){
             var n={},stuff,j= 0,len=arguments.length;
             for(var j=0;j<len;j++){

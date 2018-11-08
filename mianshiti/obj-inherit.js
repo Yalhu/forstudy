@@ -236,7 +236,5 @@ console.log(Flyer.prototype.isPrototypeOf(Plane.prototype));
 
 
 
-/* =========================================================== */
-// # 几种创建对象写法
 
 

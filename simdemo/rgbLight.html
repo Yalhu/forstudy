@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>红蓝黄灯</title>
+    <style>
+        ul,li{list-style: none;}
+        .light{
+            width:50px;height: 50px;
+            border:1px solid #000;border-radius:50%;
+            text-align: center;line-height: 50px;
+        }
+        .light-red{background-color:#f00;}
+        .light-blue{background-color:#00f;}
+        .light-yellow{background-color:#ff0;}
+    </style>
+</head>
+<body>
+    <h1>红蓝黄灯</h1>
+    <div>
+        <ul id="light">
+            <li class="light light-red">红灯</li>
+            <li class="light light-blue">蓝灯</li>
+            <li class="light light-yellow">黄灯</li>
+        </ul>
+    </div>
+    <script>
+        /* # 1 定义灯。用ES5，TODO: ES6 class实现**/
+        function Light(name){
+            this.name=name;
+            this.el=document.getElementsByClassName('light-'+name)[0];
+        }
+        Light.prototype.on=function(){
+            console.log('%c '+this.name+'亮了.现在秒数：','background:'+this.name+';color:#fff',new Date().getSeconds())
+            // this.el.className+=(' light-'+this.name);
+            this.el.className=('light light-'+this.name);
+        }
+        Light.prototype.off=function(){
+            console.log('%c '+this.name+'关闭.现在秒数：','background:#777;color:'+this.name,new Date().getSeconds())
+            this.el.className+='light';
+
+        }
+        var red=new Light('red')
+        var blue=new Light('blue')
+        var yellow=new Light('yellow')
+        red.off();
+        blue.off();
+        yellow.off();
+
+        /* # 2 使用promise 实现红绿灯颜色的跳转
+        绿灯执行三秒后；黄灯执行四秒后；红灯执行五秒 **/
+        var isStoped=false;
+        // ## 2.0 不用promise
+        /* function start(){
+            if(isStoped) return;
+            blue.on();
+            setTimeout(()=>{
+                blue.off();
+                yellow.on();
+                setTimeout(()=>{
+                    yellow.off()
+                    red.on();
+                    setTimeout(()=>{
+                        red.off();
+                        start();
+                    },5000)
+                },4000)
+            },3000)
+        }
+         */
+        // ## 2 promise
+        // ### v0.0: error
+        var p=function(name,wait){
+            name.on();
+            setTimeout(()=>{
+                return new Promise(function(res,rej){
+                    name.off();
+                    res()
+                })
+            },wait)
+        }
+        // var p1=p(blue,3000) // new Promise的时候会立即执行
+        // var p2=p(yellow,4000)
+        // var p3=p(red,5000)
+
+        // ### v1.1
+         function lighting(light,wait){
+            light.on()
+            return new Promise((res,rej)=>{
+                setTimeout(()=>{
+                    res();
+                },wait)
+
+            })
+        }
+        // var lightBlue=lighting(blue,3000)
+        // var lightYellow=lighting(yellow,5000)
+        // var lightRed=lighting(red,5000)
+        // lightBlue().then(()=>{lightYellow()}).then(()=>{lightRed()})
+        function start(){
+            if(isStoped) return;
+            lighting(blue,3000)
+            .then(()=>{
+                blue.off();
+                return lighting(yellow,4000) // 必须有return
+            })
+            .then(()=>{
+                yellow.off();
+                return lighting(red,5000)
+            })
+            .then(()=>{
+                red.off();
+                start()
+            })
+        }
+         start()
+
+        /* // ### v1.0 
+        function start(){
+            blue.on()
+            return new Promise((res,rej)=>{setTimeout(()=>{res()},3000)})
+        }
+        start().then(()=>{
+            blue.off();
+            yellow.on();
+            return new Promise((res,rej)=>{setTimeout(()=>{res()},4000)}) // 必须要return Promise
+        }).then(()=>{
+            yellow.off();
+            red.on();
+            return new Promise((res,rej)=>{setTimeout(()=>{res()},5000)})
+        }).then(()=>{
+            red.off()
+            blue.on()
+            return new Promise((res,rej)=>{setTimeout(()=>{res()},3000)})
+        }); */
+        
+        function stop(){
+            isStoped=true;
+        }
+
+        // # 3 电力系统  
+        // var errRecovering=new Error('电力不足，恢复中')
+        // var errShutDown=new Error('电力不足，已关机')
+        var errRecovering,errShutDown;
+        function doErr_recovering(){
+            errRecovering=new Error('电力不足，恢复中')
+        }
+        function doErr_shutDown(){
+            errShutDown=new Error('电力不足，已关机')
+        }
+        /* function clearErr(){
+            errRecovering=null;
+            errShutDown=null;
+        } */
+        var red10Seconds=function(){ // 用function返回新的promise，每次都是新的实例，如果method2是同一个的话，会立即执行
+            red.on();
+            return new Promise((res,rej)=>{
+                setTimeout(()=>{
+                    if(errRecovering){errRecovering=null;rej(0);return;}
+                    if(errShutDown){rej(1);return;}
+                    res()
+                },10000)
+            })
+        }
+        var yellow5sRandom=function (){ // 直接定义promise 时间是相同的
+            yellow.on();
+            var time=Math.floor(Math.random()*5+1);
+            return new Promise((res,rej)=>{
+                console.log('黄灯亮的随机时间:'+time)
+                setTimeout(()=>{
+                    if(errRecovering){errRecovering=null;rej(0);return;}
+                    if(errShutDown){rej(1);return;}
+                    res()
+                },time*1000)
+            })
+        }
+        var blue5Seconds=function() {
+            blue.on();
+            return new Promise((res,rej)=>{
+                setTimeout(()=>{
+                    if(errRecovering){errRecovering=null;rej(0);return;}
+                    if(errShutDown){rej(1);return;}
+                    res()
+                },5000)
+            })
+        }
+        /* var red5Seconds=function(){ // method3
+            red.on();
+            return new Promise((res,rej)=>{
+                setTimeout(()=>{
+                    res()
+                },5000)
+            })
+        } */
+        function method1(){
+            console.log('--------------------')
+            console.log('操作1开始...现在秒数：',new Date().getSeconds())
+            var p1=red10Seconds().then(()=>red.off())
+            var p2=yellow5sRandom().then(()=>yellow.off())
+            return Promise.all([p1,p2])
+        }
+        // method1();
+        function method2(){
+            console.log('--------------------')
+            console.log('操作2开始...现在秒数：',new Date().getSeconds())
+            var p1=blue5Seconds().then(()=>blue.off())
+            var p2=yellow5sRandom().then(()=>yellow.off())
+            return Promise.race([p1,p2])
+        }
+        // method2();
+        function method3(){
+            console.log('--------------------')
+            console.log('操作3开始...现在秒数：',new Date().getSeconds())
+            blue.off();
+            yellow.off();
+            red.on();
+            return new Promise((res,rej)=>{
+                setTimeout(()=>{
+                    res()
+                },5000)
+            })
+        }
+        // method3();
+        function run(){
+            if(isStoped) return;
+            method1()
+            .then(()=>{
+                return method2(); 
+            }).then(()=>{
+                return method3();
+            }).then(()=>{
+                red.off();
+                console.log('操作结束;开始新一轮操作')
+                console.log('=====================')
+                run();
+            }).catch((errNum)=>{
+                if(errNum==0){
+                    console.log('电力不足，恢复中....')
+                    console.log('预计10s后重启.现在秒数：',new Date().getSeconds())
+                    setTimeout(run,10000)
+                }
+                if(errNum==1){
+                    console.log('电力不足，已关机')
+                    return;
+                }
+            })
+        }
+        // run()
+        // setTimeout(doErr_recovering,60000);
+        // setTimeout(doErr_shutDown,60000);
+
+
+    </script>
+</body>
+</html>

@@ -120,7 +120,7 @@ function work(){
 }
 console.log(work(3,2,1));//10
 /* _____________________________ */
-// ## 柯里化 currying
+// ## 柯里化 currying  // 只有第一个参数有意义
 function add(n){//n
     return function(m){
         n+=m;
@@ -134,7 +134,7 @@ function add(n){//n
 //alert(add(1)(2)(3)(4)/*.toString()*/);
 
 /* =========================================================== */
-// ## $_PS:  柯里化
+// ## $_PS:  柯里化 // 只有第一个参数有意义
 function fn(n){
     var count=n;
     var tem=function(m){
@@ -146,13 +146,15 @@ function fn(n){
     }
     return tem;
 }
-console.log(fn(2)(3)(4)) // 24
+console.log(fn(2)(3)(4)) // f 22*3*4
+console.log(fn(2,3)(3,4)(5,3)) // f 30=2*3*5
+console.log(fn(2,3)(3,4)(5,3).toString) // 30
 
 /* =========================================================== */
 // # [10个JavaScript难点..]
 /* ______________________________________________ */
 // ## 8.柯里化 currying
-var add = function(x) {
+var add = function(x) {  // 只能两个括号
     return function(y) {
         return x + y;
     };

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>自动固定底部</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body,div{margin:0;padding:0;}
+        html,body{height:100%;}
+        .header{
+            position:fixed;
+            top:0;
+            height:30px;
+            width:100%;
+            text-align:center;
+            background: #33f;
+            z-index: 20; /* 下面内容滚动到头部时，会透过头部的空白 显示出来，造成重叠 */
+        }
+        .main{
+            position:relative;
+            min-height: 100%;
+            z-index:1; 
+        }
+        .content{
+            padding:30px 0 40px 0;
+        }
+        .footer{
+            position: absolute;
+            bottom:0;
+            width:100%;
+            height:40px;
+            color:#eee;
+            background-color:#333;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">头部始终在顶部</div>
+    <div class="main">
+        <div class="content">
+            主要内容。
+            <p>可能很长，也可能比较短</p>
+            <p>可能很长，也可能比较短</p>
+            <p>这只是一种解决方案，还有其他解决方案</p>
+            <ul>
+                <li>footer 脱离 main，main下添加占位div</li>
+                <li>footer 脱离 main，利用负margin往上移</li>
+                <li>4、使用calc计算属性</li>
+                <li>5、使用flex布局</li>
+                <li>6、使用grid网格布局</li>
+            </ul>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                Eos labore porro, optio veniam voluptatibus excepturi fugit consequuntur, officiis dolore voluptate dolorem impedit amet eaque minima. 
+                Commodi velit distinctio corporis beatae.
+            </p>
+            <div>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eligendi quasi qui error, natus amet molestias nostrum totam maiores itaque voluptates! Ad, optio rem. 
+                Id consequuntur porro, ullam sequi nostrum numquam.
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsa corporis, aliquam suscipit totam nesciunt placeat tempora fuga expedita 
+                id fugit deserunt libero explicabo odio hic eveniet, ullam quia reprehenderit consectetur.
+            </div>
+            <div>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eligendi quasi qui error, natus amet molestias nostrum totam maiores itaque voluptates! Ad, optio rem. 
+                Id consequuntur porro, ullam sequi nostrum numquam.
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eligendi quasi qui error, natus amet molestias nostrum totam maiores itaque voluptates! Ad, optio rem. 
+                Id consequuntur porro, ullam sequi nostrum numquam.
+                Lorem ipsum,
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsa corporis, aliquam suscipit totam nesciunt placeat tempora fuga expedita 
+                id fugit deserunt libero explicabo odio hic eveniet, ullam quia reprehenderit consectetur.
+            </div>
+        </div>
+        <div class="footer">
+            footer：内容少就固定在最下面；否则随页面滚动，在最下面
+        </div>
+    </div>
+</body>
+</html>

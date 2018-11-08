@@ -240,3 +240,24 @@ var obj={
 }
 obj.getName()// window
 
+
+
+/* =========================================================== */
+// # 几种创建对象写法
+
+
+/* =========================================================== */
+function Ctor(){}
+var baseConvert=function(prototype){
+    Ctor.prototype=prototype
+    var result=new Ctor()
+
+    console.log(Ctor.prototype,"xx") // {sname: "21"} "xx"
+    // Ctor.prototype=null
+    Ctor.prototype={name:23}
+    console.log(result.__proto__,"yy") // {sname: "21"} "xx", $PS:已经实现继承,指针指向 {sname:21}的地址. 后面修改的才会更新
+    var result2=new Ctor()
+    console.log(result2.__proto__) // {name: 23}
+    return result
+}
+var obj=baseConvert({"sname":"21"})
