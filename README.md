@@ -27,6 +27,7 @@ TODO:
 8\. [hero导航条自动隐藏/固定](https://yalhu.github.io/forstudy/simdemo/nav-autoHide/nav-hero-subnav.html)   
 9\.  [表格表头固定](https://yalhu.github.io/forstudy/simdemo/table-fixHead.html)    
 10\. [缓慢掉落的小球](https://yalhu.github.io/forstudy/simdemo/dropBall-reqAF.html)  
+11\. [红蓝黄灯](https://yalhu.github.io/forstudy/simdemo/rgbLight.html)  
 
 <!-- 
 其它(DIYcomponent)：      
