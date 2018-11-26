@@ -38,7 +38,7 @@ Danmu.prototype={
         color:'#000',
         fontSize:'14px',
     },
-    ped:function(dom,n){ 
+    ped:function(dom,n){ //
         var arr=[];
         $(dom).children('p:lt('+n+')').each(function(k,val){
             var value=0;
@@ -155,6 +155,9 @@ Danmu.prototype={
         this.style(this.css);
     }
 }
+
+
+/* polyfill ie8 */
 if (!Array.prototype.indexOf){
     Array.prototype.indexOf = function(elt /*, from*/){
         var len = this.length >>> 0;
