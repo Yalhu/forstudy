@@ -28,6 +28,7 @@ TODO:
 9\.  [表格表头固定](https://yalhu.github.io/forstudy/simdemo/table-fixHead.html)    
 10\. [缓慢掉落的小球](https://yalhu.github.io/forstudy/simdemo/dropBall-reqAF.html)  
 11\. [红蓝黄灯(Promise)](https://yalhu.github.io/forstudy/simdemo/rgbLight.html)  
+12\. [圆角和边框实现-ie7](https://yalhu.github.io/forstudy/simdemo/radius&shadow-ie7.html) 
 
 <!-- 
 其它(DIYcomponent)：      
