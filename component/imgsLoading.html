@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height, initial-scale=1.0,user-scalable=no">
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <!-- <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
+    <title>多图片加载进度</title>
+    <style>
+        #welcome_loading{
+            width:65%;
+            text-align: center;
+        }
+        #welcome_loading img{
+            width:100%;
+        }
+        /* from bootsrap  */
+        .progress{
+            display:flex;
+            height:.6rem;
+            border-radius:4px;
+            background-color:#e9ecef;
+        }
+        .progress-bar{ 
+            background-color:#000;
+            background-image: linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+            background-size:1rem 1rem;
+            transition:width .6s ease;
+            animation:progress-bar-stripes 1s linear infinite;
+        }
+        @keyframes progress-bar-stripes{
+            0%{
+                background-position: 1rem 0;
+            }
+            100%{
+                background-position: 0 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>多图片加载进度</h2>
+    <div id="welcome_loading" class="loading">
+        <span>0%</span>
+        <div class="progress"><div class="progress-bar" style="width:0%"></div></div>
+    </div>
+<script>
+function ImgsLoading(ele,{totalSize=20000,imgs=[],readyHtml='加载成功',errHtml='加载失败'}={}){
+    this.dom=document.querySelector(ele)
+    this.totalSize=totalSize
+    this.imgs=imgs
+    this.readyHtml=readyHtml
+    this.errHtml=errHtml
+    this.loadedImgIndex=[]
+    this.step=0
+}
+ImgsLoading.prototype={
+    run:async function(){
+        var that=this
+        for(var i=0;i<this.imgs.length;i++){
+            try{
+                await that.preloadImg(this.imgs[i],i)
+            }catch(e){console.log('await async error:',e)}
+        }
+        console.log('awit after')
+        var html=(this.loadedImgIndex.length==this.imgs.length?this.readyHtml:this.errHtml)
+        this.setHtml(html)
+        return this.loadedImgIndex
+    },
+    preloadImg:function(url,k){
+        // console.log('pre load img',k)
+        var that=this
+        return new Promise((res,rej)=>{
+            var img=new Image()
+            img.onload=function(){
+                // console.log('img loaded',k)
+                that.loadedImgIndex.push(k)
+                var pect=Math.ceil(that.loadedImgIndex.length/that.imgs.length*100)
+                pect=(pect>100?100:pect)
+                var html='<span>'+pect+'%</span>'
+                html+='<div class="progress"><div class="progress-bar" style="width:'+pect+'%"></div></div>'
+                that.setHtml(html)
+                res(img)
+            }
+            img.onerror=function(e){rej(e)}
+            img.src=url
+        }).catch(e=>console.log('preload img error:',e))
+        // }).catch(e=>alert('preload img error:',e))
+    },
+    setHtml:function(str){
+        this.dom.innerHTML=str
+    }
+}
+
+
+var mulitImg=[
+    '../assets/images/donghua1.jpg',
+    '../assets/images/donghua2.jpg',
+    '../assets/images/donghua3.jpg',
+    '../assets/images/donghua4.jpg',
+    '../assets/images/donghua1.jpg',
+    '../assets/images/donghua2.jpg',
+    '../assets/images/donghua3.jpg',
+    '../assets/images/donghua4.jpg',
+]
+var loading=document.getElementsByClassName('loading')[0]
+
+var imgsLoading=new ImgsLoading('.loading',{imgs:mulitImg})
+
+imgsLoading.run()
+// .then(()=>{
+.finally(()=>{
+    console.log('run finally')
+    var html='<button>点击开始</button>'
+    loading.innerHTML=html
+
+}).catch(e=>{alert('操作失败,请重新进入.或者检查您的设备是否支持')})    
+</script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>多图片加载-svg</title>
+    <style>
+        svg{width:100px; height: 100px; margin:15% auto 25%; box-sizing:border-box; display: block;}
+        svg circle{fill:none;cx:50;cy:50;}
+        /* svg text{x:40;y:55;} 不起作用  原因不知*/
+        svg #txt{ x:35;y:55%;fill:red;}
+        svg #backdrop{stroke-linecap:round;stroke:#333; stroke-width:2px;r:48;}
+        svg #progress{stroke:#690; stroke-dasharray:0 1000;stroke-width:3px;r:48;}
+    </style>
+</head>
+<body>
+    
+    <script>
+        var mulitImg = [
+          'http://www.cctv.com/img/2.png',
+          'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1520235078852&di=a57664a8e118c403bf2d378757e40b08&imgtype=0&src=http%3A%2F%2Fs9.knowsky.com%2Fbizhi%2Fl%2F100001-105083%2F2009530184324945217430590.jpg',
+          'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1520235078852&di=0a127ba0bf50857c86bd886ef355d2c9&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F4%2F593a3dba085e1.jpg',
+          'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1520235078851&di=f1dacfe012d7e71c7469a4b0b4df2708&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2Fe%2F5902ad376edd5.jpg',
+          'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1520235078851&di=b6ab0dcfbe939057988cabb0bd0f3899&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F1%2F535a1f52d5f8c.jpg',
+          'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1520235078850&di=4f0693db95d8e117035f77d7a1d5e493&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2Ff%2F594336ec75b26.jpg'
+          
+       ];
+// 调用函数， 传入图片数组
+load_img(mulitImg);
+function load_img(mulitImg){
+     var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    document.body.appendChild(svg);
+    var svg_html='<circle id="backdrop" /><text x="35" y="55%" fill="red" id="txt">0%</text><circle id="progress"  />';
+    svg.innerHTML=svg_html;
+    
+    var idtxt=document.getElementById('txt');
+    var progrees=document.getElementById('progress');   
+    var pro_v=parseInt(css(progrees,'stroke-dashoffset')); 
+    var r=parseInt(css(progrees,'r'));     // 半径
+    var arcLength=Math.floor(2*Math.PI*r); // 周长
+
+    var taget=100;
+    var img = [],  
+    flag = 0; 
+          
+    var imgTotal = mulitImg.length;
+    //添加过渡效果
+    progrees.style.transitionDuration=arcLength/imgTotal/100+'s';
+    idtxt.style.transitionDelay=arcLength/imgTotal/100/2+'s';
+
+    for(var i = 0 ; i < imgTotal ; i++){
+        img[i] = new Image();
+        img[i].index=i;
+        img[i].src = mulitImg[i]
+        // 图片加载完成
+        img[i].onload = function(){
+
+            //第i张图片加载完成
+            flag++;
+            idtxt.textContent=(flag/imgTotal).toFixed(2) *100+'%';     
+            progrees.style.strokeDasharray=arcLength*(flag/imgTotal)+' 1000';// 第二个值必须大于周长
+        
+            if( flag == imgTotal ){
+            //全部加载完成
+            }
+        };
+        // 图片加载失败----继续执行，可以选择用另一张图片替换
+        img[i].onerror = function(){
+            //第i张图片加载失败
+        
+            flag++;  // 继续执行
+            // console.log(this.index+':'+this.src)
+            idtxt.textContent=(flag/imgTotal).toFixed(2) *100+'%';     
+            progrees.style.strokeDasharray=arcLength*(flag/imgTotal)+' 1000';// 第二个值必须大于周长
+            if( flag == imgTotal ){
+                //全部加载完成
+            }
+        }
+    }
+       
+    // 获取css 样式
+    function css(t, n) {
+        return t.currentStyle ? t.currentStyle[n] : getComputedStyle(t, !1)[n]
+    }
+}
+    </script>
+</body>
+</html>
