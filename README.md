@@ -10,7 +10,8 @@ TODO:
 [常见js题目](https://github.com/Yalhu/forstudy/tree/master/mianshiti)   
 ## 组件
 1\. [画板练习](https://yalhu.github.io/forstudy/boardjs/)   
-2\. [弹幕组件](https://yalhu.github.io/forstudy/danmu/)     
+2\. [弹幕组件](https://yalhu.github.io/forstudy/danmu/)    
+3\. [分页器](https://yalhu.github.io/forstudy/component/pagination.html)   
 
 [tab-构造函数](https://yalhu.github.io/forstudy/component/tab-gouzaoFun.html)   
 [tab-面向对象](https://yalhu.github.io/forstudy/component/tab-OOP.html)     
