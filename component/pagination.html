@@ -236,7 +236,8 @@ constructor:CoPagination,
             }
             
             pageList.sort()  // $PS: 这里可以不用排序。插入的时候按位置插入。长度小都是数字，省事直接用了排序 
-            console.log('page list',pageList)
+            pageList.sort((a,b)=>a-b)  // $_TODO: 最后一个实例7，8的时候插入有问题。
+			console.log('page list',pageList)
             for(var i=0;i<pageList.length;i++){
                 var clsName=curr==pageList[i]?'co-pagination-page-curr':''
                 str +=`<span class="co-pagination-page ${clsName}">${pageList[i]}</span>`
